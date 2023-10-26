@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resumo.css">
+    <title>Informações sobre o código</title>
+</head>
+
+<body>
+    <h1>Explicação do código</h1>
+
+    <h3>Este código é um exemplo de um script Python que extrai informações de um site da web e as armazena em um
+        arquivo Excel.</h3>
+
+    <ul>
+        <li>import requests: Esta linha importa a biblioteca requests, que é usada para fazer requisições HTTP para um
+            site da web e obter o conteúdo da página.</li>
+        <li>from bs4 import BeautifulSoup: Aqui, estamos importando a biblioteca BeautifulSoup da biblioteca bs4. O
+            BeautifulSoup é usado para analisar o conteúdo HTML de uma página da web e extrair informações específicas.
+        </li>
+        <li>import pandas as pd: Isso importa a biblioteca pandas com um alias 'pd'. O pandas é uma biblioteca popular
+            para manipulação e análise de dados em Python.</li>
+        <li>base_url = "http://www.detro.rj.gov.br/operacao/empresas-de-onibus-intermunicipais-1_1497903715&pag={}":
+            Esta linha define uma variável chamada base_url que armazena uma string contendo uma URL com um espaço
+            reservado {}. Esse espaço reservado será preenchido com um número de página durante a execução do loop.</li>
+        <li>dataframes = []: Aqui, estamos criando uma lista vazia chamada dataframes que será usada para armazenar os
+            DataFrames do pandas que contêm os dados extraídos.</li>
+        <li>for page in range(0, 100): Isso inicia um loop que itera de 0 a 99, onde page é uma variável que representa
+            o número da página a ser acessada.</li>
+        <li>url = base_url.format(page): Isso cria a URL completa, substituindo o espaço reservado na URL base pelo
+            número da página atual.</li>
+        <li>response = requests.get(url): Aqui, estamos usando a biblioteca requests para fazer uma solicitação GET à
+            URL especificada e armazenando a resposta na variável response.
+        </li>
+        <li>if response.status_code == 200:: Verifica se a resposta da solicitação HTTP foi bem-sucedida (código de
+            status 200, que significa "OK").</li>
+        <li>site = BeautifulSoup(response.content, 'html.parser'): Aqui, estamos criando um objeto BeautifulSoup para
+            analisar o conteúdo HTML da página da web usando o analisador 'html.parser'.</li>
+        <li>div = site.find('div', class_='card shadow'): Estamos procurando no HTML da página por uma tag <div> com a
+                classe 'card shadow' e armazenando-a na variável div.</li>
+        <li>elements = div.find_all(['h5', 'li', 'strong', 'p']) if div else []: Isso encontra todas as ocorrências das
+            tags HTML 'h5', 'li', 'strong' e 'p' dentro da div. Se a div não foi encontrada (caso a página não contenha
+            o elemento), uma lista vazia é atribuída a elements.</li>
+        <li>data = [item.get_text(strip=True) for item in elements]: Isso extrai o texto de cada elemento HTML na lista
+            elements e remove espaços em branco extras. O resultado é armazenado na lista data.</li>
+        <li>df = pd.DataFrame({'Data': data}): Aqui, estamos criando um DataFrame do pandas com uma coluna chamada
+            'Data' e preenchendo-o com os dados extraídos da página.</li>
+        <li>dataframes.append(df): O DataFrame criado na linha anterior é adicionado à lista dataframes para posterior
+            combinação.</li>
+        <li>else:: Se a resposta da solicitação HTTP não for bem-sucedida (código de status diferente de 200), este
+            bloco será executado.</li>
+        <li>print(f"A solicitação para a página {page} falhou com o código de status {response.status_code}."): Ele
+            imprime uma mensagem indicando qual página falhou e o código de status da resposta.</li>
+        <li>result = pd.concat(dataframes): Após o loop, todos os DataFrames na lista dataframes são combinados em um
+            único DataFrame chamado result usando o método concat do pandas.</li>
+        <li>result.to_excel('infos.xlsx', index=False): Os dados no DataFrame result são exportados para um arquivo
+            Excel chamado 'infos.xlsx', com a opção index=False para evitar a inclusão do índice no arquivo Excel.</li>
+        <li>print("Dados exportados para o arquivo 'infos.xlsx' com sucesso! Verifique na pasta de destino."): Uma
+            mensagem de confirmação é impressa na saída, informando que os dados foram exportados com sucesso.</li>
+    </ul>
+
+    <h5>Não é impossível, só é dificil para um caralho :D </h5>
+
+</body>
+
+</html>
